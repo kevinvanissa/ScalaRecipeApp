@@ -1,0 +1,54 @@
+@(maybeErrorMessage:Option[String])
+@main("Create Recipe") {
+
+        <div class="col-lg-9">
+
+
+
+      <div class="row">
+            <form method="post" action="/createrecipe" enctype="multipart/form-data">
+              <fieldset>
+                <legend>Create Recipe</legend>
+                @maybeErrorMessage.map { errorMessage =>
+                    <span class="label bg--error">@errorMessage</span>
+                }
+
+                <p>
+                  <label for="recipetitle">Recipe Title:</label>
+                  <input id="recipetitle" type="text" name="recipetitle" />
+                </p>
+
+
+                <p>
+                  <label for="description">Description:</label>
+                 <textarea style="vertical-align:top;" "id="description" name="description" rows="5" cols="30"></textarea>
+                </p>
+
+                <p>
+                 <label for="ingredient">Ingredient:</label>
+                 <textarea style="vertical-align:top;" id="ingredient" name="ingredient" placeholder="One line per ingredient" rows="5" cols="30"></textarea>
+               </p>
+
+
+                <p>
+                  <label for="instruction">Instruction:</label>
+                 <textarea style="vertical-align:top;" id="instruction" name="instruction" placeholder="One line per instruction" rows="5" cols="30"></textarea>
+                </p>
+              <p>
+                    <label for="picture">Upload Image:</label>
+                   <input type="file" name="picture" id="picture">
+                 </p>
+                 <p align='center'>
+                   <button type="submit" class="button--lg">Submit Form</button>
+                 </p>
+
+        </fieldset>
+
+          </form>
+
+
+      </div>
+
+        </div>
+        <!-- /.col-lg-9 -->
+}
