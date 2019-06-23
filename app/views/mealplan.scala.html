@@ -1,0 +1,275 @@
+@(protList: Array[Double], fatList: Array[Double], carbList: Array[Double],  breakfastList: List[model.MealPlan],  lunchList: List[model.MealPlan],dinnerList: List[model.MealPlan], d: (Double,Double,Double) => Double,
+breakfastcal: Double, lunchcal: Double, dinnercal: Double, totalcal: Double, date: String, user: Option[model.User], fFoods: List[model.Food],
+rFoods: List[model.Food])(implicit flash: Flash)
+
+
+@main("This is my Main Page",user) {
+
+<script>
+$( function() {
+$( ".datepicker" ).datepicker(
+        {dateFormat: 'yy-mm-dd',
+
+         onSelect: function(value, date) {
+         $(location).attr('href', 'http://localhost:9000/mealplan/'+value)
+        // $(location).attr('href', '/mealplan/'+value)
+        // alert('The chosen date is ' + value);
+      }
+
+        }
+
+
+        );
+
+
+} );
+
+</script>
+
+
+<script>
+
+
+
+
+      $( function() {
+
+          $("#foodid").autocomplete({
+          source: '/searchfood',
+          minLength:1,
+          focus: function(event, ui){
+            //event.preventDefault();
+             alert("Hello");
+            // $("#foodid").val(ui.item.ndb_no);
+
+
+
+
+          },
+          select: function(event, ui){
+                alert("Hello");
+               // $("#food_no").val(ui.item.id);
+          }
+          });
+          } );
+
+
+            $( function() {
+    var availableTags = [
+      "ActionScript",
+      "AppleScript",
+      "Asp",
+      "BASIC",
+      "C",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ];
+    $( "#tags" ).autocomplete({
+      source: availableTags,
+      minLength:1,
+       focus: function(event, ui){
+             alert("Hello");
+             //$("#foodid").val(ui.item.key);
+          }
+
+    });
+  } );
+
+
+
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h2 class="text-center mb-4">Favourite Foods</h2>
+
+           @if(fFoods){
+
+            @for(f <- fFoods){
+            <a href="@routes.Application.deleteFavourite(f.ndb_no)" onclick="javascript: return deleteItem();"><i class="fa fa-times-circle deleteC" aria-hidden="true"></i> </a> <a href="@routes.Application.retrieveFood(f.ndb_no)" id="food_@f.ndb_no" data-toggle="tooltip" class="mytooltip2"  title="Please wait..."> @f.shrt_desc </a>
+
+            <br />
+            <br />
+
+            }
+            }else{ <i>You do not have any favourite foods as yet. You will get the option when you are adding foods to your meal.</i>}
+
+
+        </div>
+
+
+        <div class="col-md-4">
+            <h2 class="text-center mb-4">Meal Plan</h2>
+
+            <a type="button" href="/foodsearch" class="btn btn-lg btn-info">Add Food</a>
+            <br /> <br />
+
+            <div style = "font-size:25px" id = "todaysdate">Please wait....</div>
+
+
+
+            <a href="@routes.Application.mealplan(date,"prev")  "> << Prev </a> &nbsp;   @date &nbsp;  <a href="@routes.Application.mealplan(date,"next")"> Next >> </a>
+
+
+            <script type = "text/JavaScript">
+                 var a = moment('@date').format('MMM Do YYYY').toString();
+                document.getElementById("todaysdate").innerHTML = a;
+            </script>
+
+            @if(flash.get("failure").getOrElse("") == ""){
+
+            }else{
+            <div class="alert alert-danger">
+                <a class="close font-weight-light" data-dismiss="alert" href="#">×</a> @flash.get("failure").getOrElse("")
+            </div>
+            }
+
+
+          <form method="POST" action="/selectdate"><input type="text" placeholder="Click to select Date" class="datepicker" id="date" name="date"> <button class="btn btn-sm btn-success" type="submit">Submit Date</button></form>
+
+            <h3>Total Cal: @totalcal (g)</h3>
+            <span class="mealT"> Protein: @protList(3) (g) | Fat: @fatList(3) (g) | Carbs: @carbList(3) (g) </span> <br /> <br />
+
+
+            <h2 class="bfastTitle"><span  class="badge badge-success" > Breakfast - Cal: @breakfastcal (g)</span></h2>
+            <span class="bfastT"> Protein: @protList(0) (g) | Fat: @fatList(0) (g) | Carbs: @carbList(0) (g) </span> <br />
+<!--            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#breakfastModal"  >Add Food</button>-->
+
+            @for(m <- breakfastList){
+            <a href="/deletemeal/@m.id" onclick="javascript: return deleteItem();"><i class="fa fa-times-circle deleteC" aria-hidden="true"></i></a>
+            <b><a href="@routes.Application.retrieveFood(m.foodid)"> @m.shrt_desc </a> </b> <br />
+            <b><i>  @m.amount @m.msre_desc </i></b> <br />
+           Protein : @d(m.protein_g,m.gm_wgt,m.amount) (g), Fat: @d(m.lipid_tot_g,m.gm_wgt,m.amount) (g), Carbohydrate: @d(m.carbohydrt_g,m.gm_wgt,m.amount) (g), Calories: @d(m.energ_kcal,m.gm_wgt,m.amount) (g)
+              <br />
+            <hr>
+
+            }
+
+
+
+            <h2 class="lunchTitle"><span class="badge badge-primary" > Lunch - Cal: @lunchcal (g)</span></h2>
+            <span class="lunchT"> Protein: @protList(1) (g) | Fat: @fatList(1) (g) | Carbs: @carbList(1) (g) </span> <br />
+<!--            <button type="button" class="btn btn-sm btn-warning">Add Food</button>-->
+
+            @for(m <- lunchList){
+            <a href="/deletemeal/@m.id" onclick="javascript: return deleteItem();"><i class="fa fa-times-circle deleteC" aria-hidden="true"></i></a>
+            <b><a href="@routes.Application.retrieveFood(m.foodid)"> @m.shrt_desc </a></b> <br />
+            <b> <i>  @m.amount @m.msre_desc </i> </b> <br />
+            Protein : @d(m.protein_g,m.gm_wgt,m.amount) (g), Fat: @d(m.lipid_tot_g,m.gm_wgt,m.amount) (g), Carbohydrate: @d(m.carbohydrt_g,m.gm_wgt,m.amount) (g), Calories:  @d(m.energ_kcal,m.gm_wgt,m.amount) (g)
+            <br />
+            <hr>
+
+            }
+
+
+            <h2 class="dinnerTitle"><span class="badge badge-danger" > Dinner - Cal: @dinnercal (g)</span></h2>
+            <span class="dinnerT"> Protein: @protList(2) (g) | Fat: @fatList(2) (g) | Carbs: @carbList(2) (g) </span> <br />
+<!--            <button type="button" class="btn btn-sm btn-success">Add Food</button>-->
+
+
+            @for(m <- dinnerList){
+            <a href="/deletemeal/@m.id" onclick="javascript: return deleteItem();"><i class="fa fa-times-circle deleteC" aria-hidden="true"></i></a>
+            <b> <a href="@routes.Application.retrieveFood(m.foodid)">@m.shrt_desc</a> </b> <br />
+            <b><i>  @m.amount @m.msre_desc </i></b> <br />
+           Protein : @d(m.protein_g,m.gm_wgt,m.amount) (g), Fat: @d(m.lipid_tot_g,m.gm_wgt,m.amount), Carbohydrate: @d(m.carbohydrt_g,m.gm_wgt,m.amount) (g), Calories:  @d(m.energ_kcal,m.gm_wgt,m.amount) (g)
+            <br />
+            <hr>
+
+            }
+
+
+
+        </div>
+
+
+        <div class="col-md-4">
+            <h2 class="text-center mb-4">Recommended Foods</h2>
+            <br />
+
+
+
+
+            @if(rFoods){
+             <ul>
+            @for(f <- rFoods){
+                 <li><a href="@routes.Application.retrieveFood(f.ndb_no)" id="food3_@f.ndb_no" data-toggle="tooltip" class="mytooltip3"  title="Please wait..."> @f.shrt_desc </a> </li>
+
+
+
+            }
+             </ul>
+            }else{ <i>You do not have any favourite foods as yet. You will get the option when you are adding foods to your meal.</i>}
+
+
+
+
+
+        </div>
+
+
+
+
+    </div>
+</div>
+
+
+
+
+<!-- Modal for Breakfast -->
+<div class="modal fade" id="breakfastModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Breakfast</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+
+
+                <form name="addfood" id="addfood" action="" method="post">
+                    Enter Food: <input type="text" id="foodid" name="foodid" value="" > <br />
+                    <input type="hidden" id="food_no" name="food_no" >
+               </form>
+
+                <div class="ui-widget">
+                    <label for="tags">Tags: </label>
+                    <input id="tags">
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+}

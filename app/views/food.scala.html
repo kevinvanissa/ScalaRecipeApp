@@ -1,0 +1,128 @@
+@(food: Option[model.FoodDetails],msreDesc: List[model.MsreDesc], date: String, user: Option[model.User],ffood:Boolean)
+
+@main("Show Food",user) {
+
+
+<script>
+$( function() {
+$( ".datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
+} );
+
+</script>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+           @if(food){
+            <h3>  @food.get.shrt_desc </h3>
+            @if(ffood) {
+            <p>(This food is in your favourites)</p>
+                 }else{
+            <a href="@routes.Application.saveFavourite(food.get.ndb_no)" class="btn btn-sm btn-info">Add to Favourite</a> <br /> <br />
+            }
+            <span class="badge badge-secondary">Per 100 grams(g)</span>  <br />
+              Protein:  @food.get.protein_g (g)<br />
+              Fats:  @food.get.lipid_tot_g (g) <br />
+               Carbohydrate: @food.get.carbohydrt_g (g) <br />
+               Calories: @food.get.energ_kcal (kcal)<br /> <br />
+                 
+          <br />
+            <div id="canvas-holder" style="width:80%;align:left;">
+                <canvas id="chart-area"></canvas>
+            </div>
+
+           <script>
+
+		var config = {
+			type: 'pie',
+			data: {
+				datasets: [{
+					data: [
+						@food.get.protein_g,
+						@food.get.lipid_tot_g,
+						@food.get.carbohydrt_g,
+					],
+					backgroundColor: [
+						window.chartColors.red,
+						window.chartColors.yellow,
+						window.chartColors.blue,
+					],
+					label: 'Dataset 1'
+				}],
+				labels: [
+					'Protein',
+					'Fat',
+					'Carbohydrate'
+				]
+			},
+			options: {
+				responsive: true
+			}
+		};
+
+
+       	window.onload = function() {
+			var ctx = document.getElementById('chart-area').getContext('2d');
+			window.myPie = new Chart(ctx, config);
+		};
+
+           </script>
+
+        </div>
+
+        <div class="col-md-6">
+<h3>Enter your Meal Below: </h3> <br />
+
+
+<form>
+    <input type="hidden" id="protein" value="@food.get.protein_g">
+    <input type="hidden" id="fat" value="@food.get.lipid_tot_g">
+    <input type="hidden" id="carbohydrate" value="@food.get.carbohydrt_g">
+    <input type="hidden" id="calories" value="@food.get.energ_kcal">
+</form>
+
+
+            <div class="card card-body">
+ <form method="post" action="/savemealplan">
+
+         Date: <input type="text"  class="datepicker" id="date" name="date" value="@date"> <br /> <br />
+
+   Amount: <input type="text" name="amount" id="amount" size="4">
+       <input type="hidden" id="foodid" name="foodid" value="@food.get.ndb_no">
+<!--        <input type="hidden" id="seq" name="seq" value="">-->
+          <select name="description" id="description">
+             @for(m <- msreDesc){
+                
+                 <option value='@m.gm_wgt @m.seq'>@m.msre_desc</option>
+            }
+           
+          </select>
+     <div id="foodvals">
+     </div>
+<br />
+     Meal Type: <select name="meal_time" id="meal_time">
+     <option value="">Select meal type...</option>
+         @for(m <- List("Breakfast","Lunch","Dinner")){
+
+         <option value='@m'>@m</option>
+         }
+
+     </select>
+<br /> <br />
+     <button class="btn btn-success" type="submit">Submit Meal</button>
+
+ </form>
+<br />
+            </div>
+
+
+
+               }else{
+                  No Food!!!
+               }
+      </div>
+</div>
+        </div>
+        <!-- /.col-lg-9 -->
+}

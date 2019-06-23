@@ -1,0 +1,18 @@
+@(foods: List[model.Food], user: Option[model.User])
+@main("Show Foods List",user) {
+
+        <div class="col-lg-9">
+
+      <div class="row">
+           @if(foods){
+                @for(food <- foods){
+                    @food.shrt_desc <br />
+                }
+               }else{
+                  No Foods Found!!!!               
+               }
+      </div>
+
+        </div>
+        <!-- /.col-lg-9 -->
+}

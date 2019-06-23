@@ -15,7 +15,7 @@ import com.softwaremill.macwire._
 import play.api.cache.ehcache.EhCacheComponents
 import _root_.controllers.AssetsComponents
 import scalikejdbc.config.DBs
-import services.{RecipeService, AuthService, UserAuthAction}
+import services.{FoodService, RecipeService, AuthService, UserAuthAction}
 
 
 import scala.concurrent.Future
@@ -42,6 +42,7 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
      override lazy val httpFilters = Seq(statsFilter)
 
      lazy val recipeService = wire[RecipeService]
+     lazy val foodService = wire[FoodService]
 
      lazy val authService = new AuthService(defaultCacheApi.sync)
      lazy val userAuthAction = wire[UserAuthAction]

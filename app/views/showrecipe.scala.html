@@ -1,5 +1,5 @@
-@(recipe: Option[model.Recipe], ingredients: Array[String],instructions: Array[String])
-@main("Create Recipe") {
+@(recipe: Option[model.Recipe], ingredients: Array[String],instructions: Array[String],user: Option[model.User])
+@main("Create Recipe",user) {
 
         <div class="col-lg-9">
 

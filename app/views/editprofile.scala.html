@@ -1,0 +1,145 @@
+@(user: Option[model.User])(implicit flash: Flash)
+
+
+@main("Edit Profile",user) {
+
+
+<script>
+$( function() {
+$( ".datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
+} );
+
+</script>
+
+
+       
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+
+<br />
+            <h3>Edit Profile</h3>
+<br />      @if(flash.get("failure").getOrElse("") == ""){
+
+            }else{
+            <div class="alert alert-danger">
+                <a class="close font-weight-light" data-dismiss="alert" href="#">×</a> @flash.get("failure").getOrElse("")
+            </div>
+            }
+
+            @if(flash.get("success").getOrElse("") == ""){
+
+            }else{
+            <div class="alert alert-info">
+                <a class="close font-weight-light" data-dismiss="alert" href="#">×</a> @flash.get("success").getOrElse("")
+            </div>
+            }
+
+
+            <form method="post" action="/editprofile">
+                <fieldset>
+                    <b>First Name: </b>
+                    <div class="form-group has-error">
+                        <input class="form-control input-lg"  value="@user.get.firstname" name="firstname" type="text">
+                    </div>
+
+                    <b>Last Name: </b>
+                    <div class="form-group has-error">
+                        <input class="form-control input-lg" value=@user.get.lastname name="lastname" type="text">
+                    </div>
+
+                    <b> Date of Birth: </b>
+                    <div class="form-group has-error">
+                        <input class="form-control input-lg datepicker"  name="dob" type="text" value=@user.get.dob>
+                    </div>
+
+                     <b>Weight (Kilograms): </b>
+                    <div class="form-group has-error">
+                        <input class="form-control input-lg" name="weight" type="text" value=@user.get.weight >
+                    </div>
+                    <b>Height (Centimeter): </b>
+                    <div class="form-group has-success">
+                        <input class="form-control input-lg"  name="height" type="text" value=@user.get.height>
+                    </div>
+
+                    <b>Gender:</b>
+                    <div class="form-group has-success">
+                         <select name="gender" id="gender">
+                        <option value="">Select Gender...</option>
+                        @for(m <- List("Female","Male")){
+                         @if(m==user.get.gender){<option value='@m' selected>@m</option>}else{<option value='@m'>@m</option>}
+
+                        }
+                   </select>
+                    </div>
+
+                    <b> Activity Level:</b>
+                    <div class="form-group has-success">
+                       <select name="activity_level" id="activity_level">
+                        <option value="">Select Activity Level...</option>
+                        @for(m <- List("Sedentary","Lightly Active","Active","Very Active")){
+                           @if(m==user.get.activity_level){<option value='@m' selected>@m</option>}else{<option value='@m'>@m</option>}
+                        }
+                    </select>
+                    </div>
+
+
+
+
+
+                    <input class="btn btn-lg btn-primary btn-block" value="Save Profile" type="submit">
+                </fieldset>
+            </form>
+
+
+
+
+</div>
+
+
+        <div class="col-md-6">
+            <h3> Conversions Assistance </h3>
+            <br />
+            Enter Pounds to convert to Kilograms for Weight
+            <form>
+                Pounds (lb):  <input type="text" id="pounds_input">
+            </form>
+            <div id="pounds"></div>
+            <br />
+
+            <hr>
+            <br />
+
+            Enter Feet to convert to Centimeters for Height
+            <form>
+                Feet (ft):  <input type="text" id="feet_input">
+            </form>
+            <div id="feet"></div>
+
+
+
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

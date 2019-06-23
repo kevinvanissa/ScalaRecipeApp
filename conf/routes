@@ -1,14 +1,43 @@
 GET     /                           controllers.Application.index
+# Food list (look at the default values for pagination parameters)
+GET     /foods                 controllers.Application.list(p:Int ?= 0, s:Int ?= 2, f ?= "")
+GET     /editprofile            controllers.Application.editprofile
+POST    /editprofile             controllers.Application.saveProfile
 GET    /login                       controllers.Application.login
 POST  /login                        controllers.Application.doLogin
+GET   /logout                        controllers.Application.doLogout
+GET    /register                     controllers.Application.register
 #GET     /recipe                     controllers.Application.recipe
 #GET     /recipes                    controllers.Application.recipes
 GET    /restricted                  controllers.Application.restricted
+GET    /mealplan/:date         controllers.Application.mealplan(date:String, which ?= "")
+
+GET     /searchfood            controllers.Application.searchfoodauto
+
+POST   /getlongdes              controllers.Application.getlongdes
+
+GET     /showfoods                  controllers.Application.foods
+GET     /retrievefood/:ndb_no          controllers.Application.retrieveFood(ndb_no: String)
 
 GET     /createrecipe               controllers.Application.createrecipe
+
+GET    /addtofavourite/:ndb_no       controllers.Application.saveFavourite(ndb_no: String)
+
+GET   /deletefavourite/:ndb_no               controllers.Application.deleteFavourite(ndb_no: String)
+
+GET     /deletemeal/:id               controllers.Application.deleteMeal(id: Int)
 
 GET     /getrecipe/:id                  controllers.Application.retrieveRecipe(id: Int)
 
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 POST     /createrecipe             controllers.Application.docreaterecipe
+
+POST    /selectdate                 controllers.Application.getDate
+
+POST    /doregister                  controllers.Application.doRegister
+
+POST    /savemealplan                controllers.Application.saveMealPlan
+
+GET      /foodsearch                controllers.Application.foodsearch(p:Int ?= 0, s:Int ?= 2, f ?= "")
+

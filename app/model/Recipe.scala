@@ -14,9 +14,4 @@ object Recipe {
      rs.string("description"), rs.string("ingredient"), rs.string("instruction"), rs.string("image"))
  }
 
-
-
-
-
-
 }

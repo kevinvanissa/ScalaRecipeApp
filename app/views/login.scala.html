@@ -1,29 +1,39 @@
-@(maybeErrorMessage: Option[String])
-<html lang="en">
-  <head>
-      <title>Login page</title>
-      <link rel="stylesheet"
-      href="@routes.Assets.versioned("compiled/styles.css")">
-      <link rel="shortcut icon" type="image/png"
-      href="@routes.Assets.versioned("images/favicon.png")">
-  </head>
-  <body>
+@(maybeErrorMessage: Option[String], user: Option[model.User])
+@main("This is my Main Page",user) {
+  
+       
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-8 col-md-6 mx-auto">
+
+<br /> <br />
+   <div class="card card-body">
+                            <h3 class="text-center mb-4">Login</h3>
     <form method="post" action="/login">
-      <fieldset>
-        <legend>Login</legend>
         @maybeErrorMessage.map { errorMessage =>
-                 <span class="label bg--error">@errorMessage</span>
+                    <div class="alert alert-danger">
+                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>@errorMessage
+                    </div>
              }
-        <p>
+
+        </fieldset>
+        <div class="form-group">
           <label for="email">Email:</label>
-          <input id="email" type="text" name="email" />
-        </p>
-        <p>
+          <input id="email" class="form-control" type="text" name="email" />
+        </div>
+        <div class="form-group">
           <label for="password">Password:</label>
-          <input id="password" type="password" name="password"
-        </p>
-        <button type="submit" class="button--sm">Login</button>
-      </fieldset>
-    </form>
-  </body>
-</html>
+          <input id="password" class="form-control" type="password" name="password"
+        </div>
+<br />
+        <input class="btn btn-lg btn-success btn-block" value="Log Me In" type="submit">
+        </fieldset>
+     </form>
+ </div>
+
+
+ 
+        </div>
+    </div>
+</div>
+}

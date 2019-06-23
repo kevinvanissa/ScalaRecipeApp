@@ -1,0 +1,61 @@
+body {
+    /*background: url("/assets/images/background.png");*/
+    background: #fafafa;
+}
+
+a.mainlink:link {text-decoration:none; color:#B0B0B0;}    /* unvisited link */
+a.mainlink:visited { text-decoration:none; color:#B0B0B0;} /* visited link */
+a.mainlink:hover {text-decoration:none;color:#FFFFFF;}   /* mouse over link */
+a.mainlink:active {text-decoration:none; color:#B0B0B0;}  /* selected link */
+
+
+ul.ui-autocomplete {
+    z-index: 1100;
+}
+
+
+.bfastTitle{
+    color:green;
+}
+
+.lunchTitle{
+    color:blue;
+}
+
+.dinnerTitle{
+    color:red;
+}
+
+.fSize{
+    font-size: 0.8em;
+    color:blue;
+}
+
+.mealT{
+    font-size: 0.8em;
+}
+
+.bfastT{
+   font-size: 0.8em;
+   color: green;
+}
+
+
+.lunchT{
+   font-size: 0.8em;
+      color: blue;
+}
+
+.dinnerT{
+    font-size: 0.8em;
+    color: red;
+
+}
+
+.deleteC{
+    color:red;
+}
+
+.allN{
+    font-size: 0.8em;
+}

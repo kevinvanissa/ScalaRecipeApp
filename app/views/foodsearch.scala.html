@@ -1,0 +1,106 @@
+@(currentPage: model.Page[model.Food],currentOrderBy: Int, currentFilter: String, date:String,user: Option[model.User])
+
+@import helper._
+
+@****************************************
+* Helper generating navigation links    *
+****************************************@
+@link(newPage: Int, newOrderBy: Option[Int] = None) = @{
+routes.Application.foodsearch(newPage, newOrderBy.map { orderBy =>
+if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
+}.getOrElse(currentOrderBy), currentFilter)
+
+}
+
+
+@main("Food Search Results",user) {
+  
+       
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-8 col-md-6 mx-auto">
+
+<br />
+
+            <div style = "font-size:25px" id = "todaysdate">Please wait....</div>
+            <script type = "text/JavaScript">
+                 var a = moment('@date').format('MMM Do YYYY').toString();
+                document.getElementById("todaysdate").innerHTML = a;
+            </script>
+<br />
+<form method="get" action="@routes.Application.foodsearch()">
+   <div class="input-group mb-3">
+  <input id="foodtitle" name="f" id="searchbox" type="search" class="form-control" value="@currentFilter" placeholder="Enter Food Name" aria-label="Enter Food" aria-describedby="basic-addon2">
+  <div class="input-group-append">
+    <button class="btn btn-outline-success" type="submit">Find Food</button>
+  </div>
+</div>
+</form>
+
+
+
+
+
+Total: @currentPage.total <br/> <br/>
+
+        @Option(currentPage.items).filterNot(_.isEmpty).map { foods =>
+        <ul>
+        @foods.map {
+            case (food) => {
+
+            <li> <a href="@routes.Application.retrieveFood(food.ndb_no)" id="food_@food.ndb_no" data-toggle="tooltip" class="mytooltip2"  title="Please wait...">@food.shrt_desc</a>
+            </li>
+            }
+        }
+        </ul>
+
+
+
+            <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                @currentPage.prev.map { page =>
+                <li class="prev">
+                    <a href="@link(page)" class="page-link">&larr; Previous</a>
+                </li>
+                }.getOrElse {
+                <li class="prev disabled">
+                    <a>&larr; Previous</a>
+                </li>
+                }
+                <li class="current">
+                    <a>&nbsp;&nbsp;&nbsp;Displaying @(currentPage.offset + 1) to @(currentPage.offset + foods.size) of @currentPage.total&nbsp;&nbsp;&nbsp;</a>
+                </li>
+                @currentPage.next.map { page =>
+                <li class="next">
+                    <a href="@link(page)" class="page-link">Next &rarr;</a>
+                </li>
+                }.getOrElse {
+                <li class="next disabled">
+                    <a>Next &rarr;</a>
+                </li>
+                }
+            </ul>
+            }
+        </nav>
+
+ 
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
