@@ -15,7 +15,8 @@ libraryDependencies ++= Seq(
   "org.scalikejdbc" %% "scalikejdbc" % "3.2.1",
   "de.svenkubiak" % "jBCrypt" % "0.4.1",
   "org.scalikejdbc" %% "scalikejdbc-config"  % "3.2.1",
-  "ch.qos.logback"  %  "logback-classic" % "1.2.3"
+  "ch.qos.logback"  %  "logback-classic" % "1.2.3",
+  "javax.xml.bind" % "jaxb-api" % "2.3.0"
  )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
